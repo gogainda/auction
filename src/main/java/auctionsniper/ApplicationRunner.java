@@ -6,7 +6,12 @@ public class ApplicationRunner {
     public static final String SNIPER_ID = "sniper";
     public static final String SNIPER_PASSWORD = "sniper";
     public static final String STATUS_JOINING = "Joining";
+    public static final String SNIPER_XMPP_ID = "sniper@192.168.0.12/Auction";
     private AuctionSniperDriver driver;
+
+    public void hasShownSniperIsBidding() {
+        driver.showsSniperStatus(MainWindow.STATUS_BIDDING);
+    }
     public void startBiddingIn(final FakeAuctionServer auction) {
         Thread thread = new Thread("Test Application") {
             @Override public void run() {

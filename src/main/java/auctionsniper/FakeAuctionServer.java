@@ -1,5 +1,6 @@
 package auctionsniper;
 
+import org.hamcrest.Matcher;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.XMPPConnection;
@@ -7,6 +8,10 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
 import static java.lang.String.format;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anything;
 
 public class FakeAuctionServer {
     private final SingleMessageListener messageListener = new SingleMessageListener();
@@ -18,10 +23,12 @@ public class FakeAuctionServer {
     private final String itemId;
     private final XMPPConnection connection;
     private Chat currentChat;
+
     public FakeAuctionServer(String itemId) {
         this.itemId = itemId;
         this.connection = new XMPPConnection(XMPP_HOSTNAME);
     }
+
     public void startSellingItem() throws XMPPException {
         connection.connect();
         connection.login(format(ITEM_ID_AS_LOGIN, itemId),
@@ -34,16 +41,49 @@ public class FakeAuctionServer {
                     }
                 });
     }
+
+    public void reportPrice(int price, int increment, String bidder)
+            throws XMPPException {
+        currentChat.sendMessage(
+                String.format("SOLVersion: 1.1; Event: PRICE; "
+                                + "CurrentPrice: %d; Increment: %d; Bidder: %s;",
+                        price, increment, bidder));
+    }
+
+    public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
+        messageListener.receivesAMessage(is(anything()));
+    }
+
+    public void hasReceivedJoinRequestFrom(String sniperId)
+            throws InterruptedException
+    {
+        receivesAMessageMatching(sniperId, equalTo(Main.JOIN_COMMAND_FORMAT));
+    }
+
+    private void receivesAMessageMatching(String sniperId,
+                                          Matcher<? super String> messageMatcher)
+            throws InterruptedException
+    {
+        messageListener.receivesAMessage(messageMatcher);
+        assertThat(currentChat.getParticipant(), equalTo(sniperId));
+    }
+
+    public void hasReceivedBid(int bid, String sniperId)
+            throws InterruptedException
+    {
+        receivesAMessageMatching(sniperId,
+                equalTo(format(Main.BID_COMMAND_FORMAT, bid)));
+    }
+
     public String getItemId() {
         return itemId;
     }
 
-    public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
-        messageListener.receivesAMessage();
-    }
+
     public void announceClosed() throws XMPPException {
         currentChat.sendMessage(new Message());
     }
+
     public void stop() {
         connection.disconnect();
     }
