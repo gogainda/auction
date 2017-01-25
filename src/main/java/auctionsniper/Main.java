@@ -85,4 +85,8 @@ public class Main  implements AuctionEventListener {
             }
         });
     }
+
+    public void currentPrice(int bidPrice, int incrementBy) {
+
+    }
 }
