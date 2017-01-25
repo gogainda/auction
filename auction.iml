@@ -17,5 +17,9 @@
     <orderEntry type="library" name="Maven: com.googlecode.windowlicker:windowlicker-core:r268" level="project" />
     <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-all:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.igniterealtime.smack:smack:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jmock:jmock-junit4:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jmock:jmock:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-library:1.1" level="project" />
+    <orderEntry type="library" name="Maven: junit:junit-dep:4.4" level="project" />
   </component>
 </module>

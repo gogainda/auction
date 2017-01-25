@@ -23,6 +23,11 @@
             <artifactId>smack</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-junit4</artifactId>
+            <version>2.6.0</version>
+        </dependency>
     </dependencies>
 
 
