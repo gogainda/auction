@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class Main  implements AuctionEventListener {
+public class Main  implements SniperListener {
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
     private static final int ARG_PASSWORD = 2;
@@ -41,10 +41,24 @@ public class Main  implements AuctionEventListener {
     private void joinAuction(XMPPConnection connection, String itemId)
             throws XMPPException {
         disconnectWhenUICloses(connection);
-        final Chat chat = connection.getChatManager().createChat(
-                auctionId(itemId, connection),
-                new AuctionMessageTranslator(this));
+//        final Chat chat = connection.getChatManager().createChat(
+//                auctionId(itemId, connection),
+//                new AuctionMessageTranslator(new AuctionSniper(nullAuction, this)));
+
+        final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),null);
         this.notToBeGCd = chat;
+        Auction auction = new Auction() {
+            public void bid(int amount) {
+                try {
+                    chat.sendMessage(String.format(BID_COMMAND_FORMAT, amount));
+                } catch (XMPPException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        chat.addMessageListener(
+                new AuctionMessageTranslator(new AuctionSniper(auction, this)));
+
         chat.sendMessage(JOIN_COMMAND_FORMAT);
     }
 
@@ -78,7 +92,7 @@ public class Main  implements AuctionEventListener {
                 connection.getServiceName());
     }
 
-    public void auctionClosed() {
+    public void sniperLost() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 ui.showStatus(MainWindow.STATUS_LOST);
@@ -86,7 +100,11 @@ public class Main  implements AuctionEventListener {
         });
     }
 
-    public void currentPrice(int bidPrice, int incrementBy) {
-
+    public void sniperBidding() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ui.showStatus(MainWindow.STATUS_BIDDING);
+            }
+        });
     }
 }
