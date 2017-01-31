@@ -11,7 +11,7 @@ import java.awt.event.WindowEvent;
 
 import static java.lang.String.format;
 
-public class Main  implements SniperListener {
+public class Main {
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
     private static final int ARG_PASSWORD = 2;
@@ -46,9 +46,7 @@ public class Main  implements SniperListener {
         final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),null);
         this.notToBeGCd = chat;
         Auction auction = new XMPPAuction(chat);
-        chat.addMessageListener(
-                new AuctionMessageTranslator(new AuctionSniper(auction, new SniperStateDisplayer())));
-
+        chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction, new SniperStateDisplayer())));
         auction.join();
     }
 
@@ -108,6 +106,11 @@ public class Main  implements SniperListener {
         public void sniperWinning() {
             showStatus(MainWindow.STATUS_WINNING);
         }
+
+        public void sniperWon() {
+            showStatus(MainWindow.STATUS_WON);
+        }
+
         private void showStatus(final String status) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() { ui.showStatus(status); }
