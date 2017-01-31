@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import static java.lang.String.format;
+
 public class Main  implements SniperListener {
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
@@ -41,25 +43,13 @@ public class Main  implements SniperListener {
     private void joinAuction(XMPPConnection connection, String itemId)
             throws XMPPException {
         disconnectWhenUICloses(connection);
-//        final Chat chat = connection.getChatManager().createChat(
-//                auctionId(itemId, connection),
-//                new AuctionMessageTranslator(new AuctionSniper(nullAuction, this)));
-
         final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),null);
         this.notToBeGCd = chat;
-        Auction auction = new Auction() {
-            public void bid(int amount) {
-                try {
-                    chat.sendMessage(String.format(BID_COMMAND_FORMAT, amount));
-                } catch (XMPPException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+        Auction auction = new XMPPAuction(chat);
         chat.addMessageListener(
-                new AuctionMessageTranslator(new AuctionSniper(auction, this)));
+                new AuctionMessageTranslator(new AuctionSniper(auction, new SniperStateDisplayer())));
 
-        chat.sendMessage(JOIN_COMMAND_FORMAT);
+        auction.join();
     }
 
     private void disconnectWhenUICloses(final XMPPConnection connection) {
@@ -88,7 +78,7 @@ public class Main  implements SniperListener {
     }
 
     private static String auctionId(String itemId, XMPPConnection connection) {
-        return String.format(AUCTION_ID_FORMAT, itemId,
+        return format(AUCTION_ID_FORMAT, itemId,
                 connection.getServiceName());
     }
 
@@ -106,5 +96,22 @@ public class Main  implements SniperListener {
                 ui.showStatus(MainWindow.STATUS_BIDDING);
             }
         });
+    }
+
+    public class SniperStateDisplayer implements SniperListener {
+        public void sniperBidding() {
+            showStatus(MainWindow.STATUS_BIDDING);
+        }
+        public void sniperLost() {
+            showStatus(MainWindow.STATUS_LOST);
+        }
+        public void sniperWinning() {
+            showStatus(MainWindow.STATUS_WINNING);
+        }
+        private void showStatus(final String status) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() { ui.showStatus(status); }
+            });
+        }
     }
 }
