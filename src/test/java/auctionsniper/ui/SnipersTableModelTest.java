@@ -3,6 +3,7 @@ package auctionsniper.ui;
 
 import auctionsniper.SniperSnapshot;
 import auctionsniper.SniperState;
+import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -54,7 +55,15 @@ public class SnipersTableModelTest {
     }
 
     private Matcher<TableModelEvent> samePropertyValuesAs(TableModelEvent tableModelEvent) {
-        return null;
+
+        return new FeatureMatcher<TableModelEvent, Integer>(
+                equalTo(tableModelEvent.getFirstRow()), "sniper that is ", "was")
+        {
+            @Override
+            protected Integer featureValueOf(TableModelEvent tableModelEvent) {
+                return tableModelEvent.getFirstRow();
+            }
+        };
     }
 
 
