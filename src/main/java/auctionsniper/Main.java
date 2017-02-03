@@ -46,7 +46,7 @@ public class Main {
         final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),null);
         this.notToBeGCd = chat;
         Auction auction = new XMPPAuction(chat);
-        chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction, new SniperStateDisplayer())));
+        chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction, new SniperStateDisplayer(), itemId)));
         auction.join();
     }
 
@@ -109,6 +109,39 @@ public class Main {
 
         public void sniperWon() {
             showStatus(MainWindow.STATUS_WON);
+        }
+
+        public void sniperBidding(SniperSnapshot sniperSnapshot) {
+            sniperStateChanged(sniperSnapshot);
+        }
+
+        public void sniperWinning(SniperSnapshot sniperSnapshot) {
+            sniperStateChanged(sniperSnapshot);
+        }
+
+//        public void sniperBidding(final SniperSnapshot state) {
+//            SwingUtilities.invokeLater(new Runnable() {
+//                public void run() {
+//                    ui.sniperStatusChanged(state, MainWindow.STATUS_BIDDING);
+//                }
+//            });
+//
+//        }
+//
+//        public void sniperWinning(final SniperSnapshot state) {
+//            SwingUtilities.invokeLater(new Runnable() {
+//                public void run() {
+//                    ui.sniperStatusChanged(state, MainWindow.STATUS_WINNING);
+//                }
+//            });
+//        }
+
+        public void sniperStateChanged(final SniperSnapshot sniperSnapshot) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    ui.sniperStatusChanged(sniperSnapshot);
+                }
+            });
         }
 
         private void showStatus(final String status) {
