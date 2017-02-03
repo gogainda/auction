@@ -7,11 +7,11 @@ public class SniperSnapshot {
     public final SniperState state;
 
 
-    public SniperSnapshot(String itemId, int price, int bid, SniperState bidding) {
+    public SniperSnapshot(String itemId, int price, int bid, SniperState state) {
         this.itemId = itemId;
         this.lastPrice = price;
         this.lastBid = bid;
-        this.state = bidding;
+        this.state = state;
 
     }
 
@@ -42,5 +42,15 @@ public class SniperSnapshot {
                 ", lastPrice=" + lastPrice +
                 ", lastBid=" + lastBid +
                 '}';
+    }
+
+    public SniperSnapshot bidding(int newLastPrice, int newLastBid) {
+        return new SniperSnapshot(itemId, newLastPrice, newLastBid, SniperState.BIDDING);
+    }
+    public SniperSnapshot winning(int newLastPrice) {
+        return new SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.WINNING);
+    }
+    public static SniperSnapshot joining(String itemId) {
+        return new SniperSnapshot(itemId, 0, 0, SniperState.JOINING);
     }
 }

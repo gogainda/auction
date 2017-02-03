@@ -12,7 +12,7 @@ public class SnipersTableModel extends AbstractTableModel {
 
     private SniperSnapshot snapshot = STARTING_UP;
     private static String[] STATUS_TEXT = { MainWindow.STATUS_JOINING,
-            MainWindow.STATUS_BIDDING };
+            MainWindow.STATUS_BIDDING, MainWindow.STATUS_WINNING, MainWindow.STATUS_LOST, MainWindow.STATUS_WON };
     private String state;
 
     public int getColumnCount() {
@@ -30,7 +30,7 @@ public class SnipersTableModel extends AbstractTableModel {
             case LAST_BID:
                 return snapshot.lastBid;
             case SNIPER_STATE:
-                return state;
+                return STATUS_TEXT[snapshot.state.ordinal()];
             default:
                 throw new IllegalArgumentException("No column at " + columnIndex);
         }

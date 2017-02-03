@@ -10,9 +10,6 @@ import org.junit.runner.RunWith;
 
 import static auctionsniper.ApplicationRunner.SNIPER_ID;
 
-/**
- * Created by igor on 2017-01-25.
- */
 @RunWith(JMock.class)
 public class AuctionMessageTranslatorTest {
     public static final Chat UNUSED_CHAT = null;
