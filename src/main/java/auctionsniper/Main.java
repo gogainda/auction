@@ -1,6 +1,7 @@
 package auctionsniper;
 
 import auctionsniper.ui.MainWindow;
+import auctionsniper.ui.SnipersTableModel;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
@@ -23,7 +24,8 @@ public class Main {
     public static final String SNIPER_STATUS_NAME = "sniper status";
     public static final String BID_COMMAND_FORMAT = "";
     public static final String JOIN_COMMAND_FORMAT = "join";
-    private MainWindow ui;
+    private MainWindow mainWindow;
+    private final SnipersTableModel snipers = new SnipersTableModel();
     @SuppressWarnings("unused")
     private Chat notToBeGCd;
 
@@ -46,12 +48,13 @@ public class Main {
         final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),null);
         this.notToBeGCd = chat;
         Auction auction = new XMPPAuction(chat);
-        chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction, new SniperStateDisplayer(), itemId)));
+        chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(),
+                new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId)));
         auction.join();
     }
 
     private void disconnectWhenUICloses(final XMPPConnection connection) {
-        ui.addWindowListener(new WindowAdapter() {
+        mainWindow.addWindowListener(new WindowAdapter() {
             @Override public void windowClosed(WindowEvent e) {
                 connection.disconnect();
             }
@@ -61,8 +64,7 @@ public class Main {
     private void startUserInterface() throws Exception {
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
-                ui = new MainWindow();
-
+                mainWindow = new MainWindow(snipers);
             }
         });
     }
@@ -78,76 +80,5 @@ public class Main {
     private static String auctionId(String itemId, XMPPConnection connection) {
         return format(AUCTION_ID_FORMAT, itemId,
                 connection.getServiceName());
-    }
-
-    public void sniperLost() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ui.showStatus(MainWindow.STATUS_LOST);
-            }
-        });
-    }
-
-    public void sniperBidding() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ui.showStatus(MainWindow.STATUS_BIDDING);
-            }
-        });
-    }
-
-    public class SniperStateDisplayer implements SniperListener {
-        public void sniperBidding() {
-            showStatus(MainWindow.STATUS_BIDDING);
-        }
-        public void sniperLost() {
-            showStatus(MainWindow.STATUS_LOST);
-        }
-        public void sniperWinning() {
-            showStatus(MainWindow.STATUS_WINNING);
-        }
-
-        public void sniperWon() {
-            showStatus(MainWindow.STATUS_WON);
-        }
-
-        public void sniperBidding(SniperSnapshot sniperSnapshot) {
-            sniperStateChanged(sniperSnapshot);
-        }
-
-        public void sniperWinning(SniperSnapshot sniperSnapshot) {
-            sniperStateChanged(sniperSnapshot);
-        }
-
-//        public void sniperBidding(final SniperSnapshot state) {
-//            SwingUtilities.invokeLater(new Runnable() {
-//                public void run() {
-//                    ui.sniperStatusChanged(state, MainWindow.STATUS_BIDDING);
-//                }
-//            });
-//
-//        }
-//
-//        public void sniperWinning(final SniperSnapshot state) {
-//            SwingUtilities.invokeLater(new Runnable() {
-//                public void run() {
-//                    ui.sniperStatusChanged(state, MainWindow.STATUS_WINNING);
-//                }
-//            });
-//        }
-
-        public void sniperStateChanged(final SniperSnapshot sniperSnapshot) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ui.sniperStatusChanged(sniperSnapshot);
-                }
-            });
-        }
-
-        private void showStatus(final String status) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() { ui.showStatus(status); }
-            });
-        }
     }
 }

@@ -3,9 +3,6 @@ package auctionsniper;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPException;
 
-/**
- * Created by igor on 2017-01-31.
- */
 public class XMPPAuction implements Auction {
     private final Chat chat;
 
