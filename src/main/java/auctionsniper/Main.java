@@ -9,6 +9,8 @@ import org.jivesoftware.smack.XMPPException;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.String.format;
 
@@ -25,29 +27,34 @@ public class Main {
     public static final String BID_COMMAND_FORMAT = "";
     public static final String JOIN_COMMAND_FORMAT = "join";
     private MainWindow mainWindow;
-    private final SnipersTableModel snipers = new SnipersTableModel();
+    private SnipersTableModel snipers = new SnipersTableModel();
     @SuppressWarnings("unused")
-    private Chat notToBeGCd;
+    private List<Chat> notToBeGCd = new ArrayList<Chat>();
 
     public Main() throws Exception {
         startUserInterface();
-
     }
 
     public static void main(String... args) throws Exception {
         Main main = new Main();
-        main.joinAuction(
-                connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]),
-                args[ARG_ITEM_ID]);
+
+        XMPPConnection connection =
+                connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]);
+        main.disconnectWhenUICloses(connection);
+
+        for (int i = 3; i < args.length; i++) {
+            main.joinAuction(connection, args[i]);
+        }
 
     }
 
     private void joinAuction(XMPPConnection connection, String itemId)
-            throws XMPPException {
-        disconnectWhenUICloses(connection);
+            throws Exception {
+        safelyAddItemToModel(itemId);
         final Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),null);
-        this.notToBeGCd = chat;
+        notToBeGCd.add(chat);
         Auction auction = new XMPPAuction(chat);
+//        snipers.showSnapshot(new SniperSnapshot(itemId, 0, 0, SniperState.JOINING));
         chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(),
                 new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId)));
         auction.join();
@@ -80,5 +87,13 @@ public class Main {
     private static String auctionId(String itemId, XMPPConnection connection) {
         return format(AUCTION_ID_FORMAT, itemId,
                 connection.getServiceName());
+    }
+
+    private void safelyAddItemToModel(final String itemId) throws Exception {
+        SwingUtilities.invokeAndWait(new Runnable() {
+            public void run() {
+                snipers.addSniper(SniperSnapshot.joining(itemId));
+            }
+        });
     }
 }

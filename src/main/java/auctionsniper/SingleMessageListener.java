@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -29,7 +30,8 @@ public class SingleMessageListener implements MessageListener {
             throws InterruptedException
     {
         final Message message = messages.poll(5, TimeUnit.SECONDS);
-        assertThat("Message", message, is(notNullValue()));
-        assertThat(message.getBody(), messageMatcher);
+        assertThat(message, hasProperty("body", messageMatcher));
     }
+
+
 }

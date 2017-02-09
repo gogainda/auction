@@ -11,17 +11,6 @@ public class SwingThreadSniperListener implements SniperListener {
     this.snipers = snipers;
     }
 
-    public void sniperLost() {
-        showStatus(SniperState.LOST);
-    }
-    public void sniperWinning() {
-        showStatus(SniperState.WINNING);
-    }
-
-    public void sniperWon() {
-        showStatus(SniperState.WON);
-    }
-
     public void sniperStateChanged(final SniperSnapshot sniperSnapshot) {
 
 
@@ -29,12 +18,6 @@ public class SwingThreadSniperListener implements SniperListener {
             public void run() {
                 snipers.sniperStateChanged(sniperSnapshot);
             }
-        });
-    }
-
-    private void showStatus(final SniperState state) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() { snipers.showStatus(state); }
         });
     }
 }
