@@ -2,16 +2,12 @@ package auctionsniper;
 
 import auctionsniper.ui.MainWindow;
 import auctionsniper.ui.SnipersTableModel;
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.XMPPException;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.String.format;
 
 public class Main {
     private static final int ARG_HOSTNAME = 0;
@@ -37,9 +33,6 @@ public class Main {
 
     public static void main(String... args) throws Exception {
         Main main = new Main();
-
-        XMPPConnection connection =
-                connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]);
         XMPPAuctionHouse auctionHouse =
                 XMPPAuctionHouse.connect(
                         args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]);
@@ -79,24 +72,9 @@ public class Main {
         });
     }
 
-    public static XMPPConnection connection(String hostname, String username, String password)
-            throws XMPPException {
-        XMPPConnection connection = new XMPPConnection(hostname);
-        connection.connect();
-        connection.login(username, password, AUCTION_RESOURCE);
-        return connection;
-    }
+    public static XMPPAuctionHouse connection(String hostname, String username, String password) {
 
-    private static String auctionId(String itemId, XMPPConnection connection) {
-        return format(AUCTION_ID_FORMAT, itemId,
-                connection.getServiceName());
-    }
-
-    private void safelyAddItemToModel(final String itemId) throws Exception {
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                snipers.addSniper(SniperSnapshot.joining(itemId));
-            }
-        });
+        return XMPPAuctionHouse.connect(
+                hostname, username, password);
     }
 }

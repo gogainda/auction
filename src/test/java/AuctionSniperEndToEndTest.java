@@ -1,6 +1,5 @@
 import auctionsniper.*;
 import auctionsniper.xmpp.XMPPAuction;
-import org.jivesoftware.smack.XMPPConnection;
 import org.junit.After;
 import org.junit.Test;
 
@@ -77,8 +76,8 @@ public class AuctionSniperEndToEndTest {
         CountDownLatch auctionWasClosed = new CountDownLatch(1);
         server.startSellingItem();
         application.startBiddingIn(server);
-        XMPPConnection connection = Main.connection("localhost", "sniper", "sniper");
-        Auction auction = new XMPPAuction(connection, server.getItemId());
+        XMPPAuctionHouse connection = Main.connection("localhost", "sniper", "sniper");
+        Auction auction = new XMPPAuction(connection.getCon(), server.getItemId());
         auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed));
         auction.join();
         server.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
