@@ -4,6 +4,7 @@ import auctionsniper.ui.MainWindow;
 
 import static auctionsniper.FakeAuctionServer.XMPP_HOSTNAME;
 import static auctionsniper.ui.MainWindow.STATUS_LOST;
+import static auctionsniper.ui.SnipersTableModel.textFor;
 
 public class ApplicationRunner {
     private String itemId;
@@ -31,7 +32,9 @@ public class ApplicationRunner {
 
 
         for (FakeAuctionServer auction : auctions) {
-//            driver.showsSniperStatus(auction.getItemId(), 0, 0, textFor(JOINING));
+            final String itemId = auction.getItemId();
+            driver.startBiddingFor(itemId);
+            driver.showsSniperStatus(itemId, 0, 0, textFor(SniperState.JOINING));
         }
     }
 

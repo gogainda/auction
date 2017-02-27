@@ -28,6 +28,10 @@ public class FakeAuctionServer {
         this.connection = new XMPPConnection(XMPP_HOSTNAME);
     }
 
+    public XMPPConnection getConnection() {
+        return connection;
+    }
+
     public void startSellingItem() throws XMPPException {
         connection.connect();
         connection.login(format(ITEM_ID_AS_LOGIN, itemId),

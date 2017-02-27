@@ -1,12 +1,20 @@
-import auctionsniper.ApplicationRunner;
-import auctionsniper.FakeAuctionServer;
+import auctionsniper.*;
+import auctionsniper.xmpp.XMPPAuction;
+import org.jivesoftware.smack.XMPPConnection;
 import org.junit.After;
 import org.junit.Test;
 
+import java.util.concurrent.CountDownLatch;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.Assert.assertTrue;
+
 public class AuctionSniperEndToEndTest {
     private final FakeAuctionServer auction = new FakeAuctionServer("item-54321");
+    private final FakeAuctionServer server = auction;
     private final FakeAuctionServer auction2 = new FakeAuctionServer("item-65432");
     private final ApplicationRunner application = new ApplicationRunner();
+
 
     @Test
     public void sniperJoinsAuctionUntilAuctionCloses() throws Exception {
@@ -61,6 +69,30 @@ public class AuctionSniperEndToEndTest {
         auction2.announceClosed();
         application.showsSniperHasWonAuction(auction, 1098);
         application.showsSniperHasWonAuction(auction2, 521);
+    }
+
+    @Test
+    public void
+    receivesEventsFromAuctionServerAfterJoining() throws Exception {
+        CountDownLatch auctionWasClosed = new CountDownLatch(1);
+        server.startSellingItem();
+        application.startBiddingIn(server);
+        XMPPConnection connection = Main.connection("localhost", "sniper", "sniper");
+        Auction auction = new XMPPAuction(connection, server.getItemId());
+        auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed));
+        auction.join();
+        server.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+        server.announceClosed();
+        assertTrue("should have been closed", auctionWasClosed.await(2, SECONDS));
+    }
+    private AuctionEventListener
+    auctionClosedListener(final CountDownLatch auctionWasClosed) {
+        return new AuctionEventListener() {
+            public void auctionClosed() { auctionWasClosed.countDown(); }
+            public void currentPrice(int price, int increment, PriceSource priceSource) {
+// not implemented
+            }
+        };
     }
 
     // Additional cleanup

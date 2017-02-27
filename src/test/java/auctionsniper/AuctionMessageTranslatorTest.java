@@ -1,5 +1,6 @@
 package auctionsniper;
 
+import auctionsniper.xmpp.AuctionMessageTranslator;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.packet.Message;
 import org.jmock.Expectations;
