@@ -2,29 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af297d47-4a87-4304-a45b-f03b0569bf85" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/AuctionHouse.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/UserRequestListener.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/XMPPAuctionHouse.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/xmpp/AuctionMessageTranslator.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/xmpp/XMPPAuction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/objogate/wl/keyboard/PL" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/jmock/example/announcer/Announcer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/auctionsniper/ui/MainWindowTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/AuctionMessageTranslator.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/XMPPAuction.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auction.iml" afterPath="$PROJECT_DIR$/auction.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/ApplicationRunner.java" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/ApplicationRunner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/Auction.java" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/Auction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/AuctionSniper.java" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/AuctionSniper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/AuctionSniperDriver.java" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/AuctionSniperDriver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/FakeAuctionServer.java" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/FakeAuctionServer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/Main.java" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/auctionsniper/ui/MainWindow.java" afterPath="$PROJECT_DIR$/src/main/java/auctionsniper/ui/MainWindow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/AuctionSniperEndToEndTest.java" afterPath="$PROJECT_DIR$/src/test/java/AuctionSniperEndToEndTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/auctionsniper/AuctionMessageTranslatorTest.java" afterPath="$PROJECT_DIR$/src/test/java/auctionsniper/AuctionMessageTranslatorTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/auctionsniper/AuctionSniperTest.java" afterPath="$PROJECT_DIR$/src/test/java/auctionsniper/AuctionSniperTest.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_windowlicker_windowlicker_core_r268.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_windowlicker_windowlicker_swing_r268.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_all_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_igniterealtime_smack_smack_3_1_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -1234,7 +1223,14 @@
       <option name="project" value="LOCAL" />
       <updated>1486600101814</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Code reformat">
+      <created>1488237092457</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1488237092457</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TestHistory">
