@@ -38,7 +38,6 @@ public class AuctionSniperDriver extends JFrameDriver {
 
     @SuppressWarnings("unchecked")
     public void startBiddingFor(String itemId) {
-        System.setProperty("com.objogate.wl.keyboard", "US");
         itemIdField().replaceAllText(itemId);
         bidButton().click();
     }

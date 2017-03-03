@@ -1,6 +1,7 @@
-package auctionsniper;
+package auctionsniper.ui;
 
-import auctionsniper.ui.SnipersTableModel;
+import auctionsniper.SniperListener;
+import auctionsniper.SniperSnapshot;
 
 import javax.swing.*;
 

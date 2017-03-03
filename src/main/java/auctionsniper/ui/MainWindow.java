@@ -1,10 +1,10 @@
 package auctionsniper.ui;
 
+import auctionsniper.SniperPortfolio;
 import auctionsniper.UserRequestListener;
 import org.jmock.example.announcer.Announcer;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,28 +20,31 @@ public class MainWindow extends JFrame {
     public static final String NEW_ITEM_ID_NAME = "new id";
     public static final String JOIN_BUTTON_NAME = "Join";
 
-    private final AbstractTableModel snipers;
     private final Announcer<UserRequestListener> userRequests =
             Announcer.to(UserRequestListener.class);
 
-    public MainWindow(AbstractTableModel snipers) {
+    public MainWindow(SniperPortfolio portfolio) {
         super(APPLICATION_TITLE);
         setName(APPLICATION_TITLE);
-        this.snipers = snipers;
-        fillContentPane(makeSnipersTable(), makeControls());
+        fillContentPane(makeSnipersTable(portfolio), makeControls());
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+
     }
 
     private void fillContentPane(JTable snipersTable, JPanel jPanel) {
         final Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
-        contentPane.add(jPanel, BorderLayout.CENTER);
+        contentPane.add(new JScrollPane(snipersTable), BorderLayout.SOUTH);
+        contentPane.add(jPanel, BorderLayout.NORTH);
+        contentPane.setPreferredSize(new Dimension(1000,800));
+
     }
-    private JTable makeSnipersTable() {
-        final JTable snipersTable = new JTable(snipers);
+    private JTable makeSnipersTable(SniperPortfolio portfolio) {
+        SnipersTableModel model = new SnipersTableModel();
+        portfolio.addPortfolioListener(model);
+        JTable snipersTable = new JTable(model);
         snipersTable.setName(APPLICATION_TITLE);
         return snipersTable;
     }

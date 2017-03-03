@@ -19,8 +19,10 @@ public class SniperLauncherTest {
     private final States auctionState = context.states("auction state")
             .startsAs("not joined");
     private final AuctionHouse auctionHouse = context.mock(AuctionHouse.class);
+    private final SniperCollector portfolio = context.mock(SniperCollector.class);
+
     private final SnipersTableModel tableModel = new SnipersTableModel();
-    private final SniperLauncher launcher = new SniperLauncher(auctionHouse,tableModel);
+//    private final SniperLauncher launcher = new SniperLauncher(auctionHouse, tableModel);
     private final SniperCollector collector = context.mock(SniperCollector.class);
 
     @Test
@@ -35,7 +37,7 @@ public class SniperLauncherTest {
             when(auctionState.is("not joined"));
             one(auction).join(); then(auctionState.is("joined"));
         }});
-        launcher.joinAuction(itemId);
+//        launcher.joinAuction(itemId);
     }
 
     private Matcher<AuctionSniper> sniperForItem(String itemId) {

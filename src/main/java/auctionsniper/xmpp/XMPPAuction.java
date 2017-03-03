@@ -12,14 +12,12 @@ import static auctionsniper.Main.AUCTION_ID_FORMAT;
 
 public class XMPPAuction implements Auction {
 
-
-
-
     public void bid(int amount) {
         sendMessage(String.format(Main.BID_COMMAND_FORMAT, amount));
     }
 
     public void join() {
+        System.out.println("sending");
         sendMessage(Main.JOIN_COMMAND_FORMAT);
     }
 

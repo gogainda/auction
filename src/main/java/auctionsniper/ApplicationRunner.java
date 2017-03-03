@@ -7,7 +7,6 @@ import static auctionsniper.ui.MainWindow.STATUS_LOST;
 import static auctionsniper.ui.SnipersTableModel.textFor;
 
 public class ApplicationRunner {
-    private String itemId;
     public static final String SNIPER_ID = "sniper";
     public static final String SNIPER_PASSWORD = "sniper";
     public static final String SNIPER_XMPP_ID = "sniper@192.168.0.12/Auction";
@@ -48,7 +47,7 @@ public class ApplicationRunner {
         }
         return arguments;
     }
-    public void showsSniperHasLostAuction() {
+    public void showsSniperHasLostAuction(String itemId) {
         driver.showsSniperStatus(itemId, 0, 0,STATUS_LOST);
     }
     public void stop() {

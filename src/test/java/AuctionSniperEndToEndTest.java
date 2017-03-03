@@ -21,7 +21,7 @@ public class AuctionSniperEndToEndTest {
         application.startBiddingIn(auction); // Step 2
         auction.hasReceivedJoinRequestFromSniper(); // Step 3
         auction.announceClosed(); // Step 4
-        application.showsSniperHasLostAuction(); // Step 5
+        application.showsSniperHasLostAuction(auction.getItemId()); // Step 5
     }
 
     @Test public void

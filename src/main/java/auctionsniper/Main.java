@@ -26,6 +26,8 @@ public class Main {
     @SuppressWarnings("unused")
     private List<Auction> notToBeGCd = new ArrayList<Auction>();
 
+    private final SniperPortfolio portfolio = new SniperPortfolio();
+
     public Main() throws Exception {
         System.setProperty("com.objogate.wl.keyboard", "US");
         startUserInterface();
@@ -40,19 +42,8 @@ public class Main {
         main.addUserRequestListenerFor(auctionHouse);
     }
 
-    private void addUserRequestListenerFor(final XMPPAuctionHouse auctionHouse) {
-        ui.addUserRequestListener(new UserRequestListener() {
-            public void joinAuction(String itemId) {
-                snipers.addSniper(SniperSnapshot.joining(itemId));
-
-                Auction auction = auctionHouse.auctionFor(itemId);
-                notToBeGCd.add(auction);
-                auction.addAuctionEventListener(
-                        new AuctionSniper(itemId, auction,
-                                new SwingThreadSniperListener(snipers)));
-                auction.join();
-            }
-        });
+    private void addUserRequestListenerFor(final AuctionHouse auctionHouse) {
+        ui.addUserRequestListener(new SniperLauncher(auctionHouse, portfolio));
     }
 
 
@@ -67,7 +58,7 @@ public class Main {
     private void startUserInterface() throws Exception {
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
-                ui = new MainWindow(snipers);
+                ui = new MainWindow(portfolio);
             }
         });
     }
