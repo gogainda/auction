@@ -13,7 +13,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 
     private SniperSnapshot snapshot = STARTING_UP;
     private static String[] STATUS_TEXT = { MainWindow.STATUS_JOINING,
-            MainWindow.STATUS_BIDDING, MainWindow.STATUS_WINNING, MainWindow.STATUS_LOST, MainWindow.STATUS_WON };
+            MainWindow.STATUS_BIDDING, MainWindow.STATUS_WINNING, MainWindow.STATUS_LOST, MainWindow.STATUS_WON, MainWindow.LOSING};
     private Vector<SniperSnapshot> snapshots = new Vector<SniperSnapshot>();
 
 
