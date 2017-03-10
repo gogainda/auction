@@ -13,7 +13,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
 
     private SniperSnapshot snapshot = STARTING_UP;
     private static String[] STATUS_TEXT = { MainWindow.STATUS_JOINING,
-            MainWindow.STATUS_BIDDING, MainWindow.STATUS_WINNING, MainWindow.STATUS_LOST, MainWindow.STATUS_WON, MainWindow.LOSING};
+            MainWindow.STATUS_BIDDING, MainWindow.STATUS_WINNING, MainWindow.STATUS_LOST, MainWindow.STATUS_WON, MainWindow.LOSING,  MainWindow.FAILED};
     private Vector<SniperSnapshot> snapshots = new Vector<SniperSnapshot>();
 
 
@@ -51,7 +51,7 @@ public class SnipersTableModel extends AbstractTableModel implements SniperListe
     }
 
     public void sniperStateChanged(SniperSnapshot newSnapshot) {
-        System.out.println("sniper state Changed");
+        System.out.println("sniper state Changed" + newSnapshot);
         int row = rowMatching(newSnapshot);
 
         snapshots.set(row, newSnapshot);

@@ -22,12 +22,12 @@ public class XMPPAuction implements Auction {
     }
 
 
-
     public void addAuctionEventListener(AuctionEventListener auctionSniper) {
         auctionEventListeners.addListener(auctionSniper);
     }
 
     private void sendMessage(final String message) {
+        System.out.println("chat join" + chat);
         try {
             chat.sendMessage(message);
         } catch (XMPPException e) {
@@ -37,13 +37,39 @@ public class XMPPAuction implements Auction {
 
     private final Announcer<AuctionEventListener> auctionEventListeners = Announcer.to(AuctionEventListener.class);
     private final Chat chat;
-    public XMPPAuction(XMPPConnection connection, String itemId) {
-        chat = connection.getChatManager().createChat(
-                auctionId(itemId, connection),
-                new AuctionMessageTranslator(connection.getUser(),
-                        auctionEventListeners.announce()));
+
+    public XMPPAuction(XMPPConnection connection, String auctionJID) {
+        System.out.println("xmmp");
+        System.out.println(auctionJID);
+        AuctionMessageTranslator translator = translatorFor(connection);
+        this.chat = connection.getChatManager().createChat(auctionId(auctionJID, connection), translator);
+        System.out.println(chat);
+        addAuctionEventListener(chatDisconnectorFor(translator));
     }
+
     private static String auctionId(String itemId, XMPPConnection connection) {
         return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
+    }
+
+    private AuctionMessageTranslator translatorFor(XMPPConnection connection) {
+        return new AuctionMessageTranslator(connection.getUser(),
+                auctionEventListeners.announce());
+    }
+
+    private AuctionEventListener
+    chatDisconnectorFor(final AuctionMessageTranslator translator) {
+        return new AuctionEventListener() {
+            public void auctionClosed() {
+
+            }
+
+            public void auctionFailed() {
+                chat.removeMessageListener(translator);
+            }
+
+            public void currentPrice(int bidPrice, int incrementBy, PriceSource fromOtherBidder) {
+
+            }
+        };
     }
 }

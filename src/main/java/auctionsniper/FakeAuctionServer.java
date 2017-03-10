@@ -39,7 +39,9 @@ public class FakeAuctionServer {
         connection.getChatManager().addChatListener(
                 new ChatManagerListener() {
                     public void chatCreated(Chat chat, boolean createdLocally) {
+                        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         currentChat = chat;
+                        System.out.println("chat in fake auction" + chat);
                         chat.addMessageListener(messageListener);
                     }
                 });
@@ -89,5 +91,9 @@ public class FakeAuctionServer {
 
     public void stop() {
         connection.disconnect();
+    }
+
+    public void sendInvalidMessageContaining(String brokenMessage) throws XMPPException {
+        currentChat.sendMessage(brokenMessage);
     }
 }

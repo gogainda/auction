@@ -22,6 +22,7 @@ public class MainWindow extends JFrame {
     public static final String NEW_ITEM_STOP_PRICE_NAME = "stop price";
     public static final String JOIN_BUTTON_NAME = "Join";
     public static final String LOSING = "Losing";
+    public static final String FAILED = "Failed";
     final JTextField itemIdField = new JTextField();
     final JFormattedTextField stopPriceField = new JFormattedTextField();
 
