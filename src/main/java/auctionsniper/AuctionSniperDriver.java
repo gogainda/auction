@@ -38,7 +38,7 @@ public class AuctionSniperDriver extends JFrameDriver {
                 withLabelText("Last Bid"), withLabelText("State")));
     }
 
-    public void startBiddingFor(String itemId, int stopPrice) {
+    public void openBiddingFor(String itemId, int stopPrice) {
         textField(NEW_ITEM_ID_NAME).replaceAllText(itemId);
         textField(NEW_ITEM_STOP_PRICE_NAME).replaceAllText(String.valueOf(stopPrice));
         bidButton().click();
@@ -47,7 +47,7 @@ public class AuctionSniperDriver extends JFrameDriver {
 
 
     @SuppressWarnings("unchecked")
-    public void startBiddingFor(String itemId) {
+    public void openBiddingFor(String itemId) {
         textField(NEW_ITEM_ID_NAME).replaceAllText(itemId);
         bidButton().click();
     }

@@ -77,7 +77,11 @@ public class AuctionSniperEndToEndTest {
         server.startSellingItem();
         application.startBiddingIn(server);
         XMPPAuctionHouse connection = Main.connection("localhost", "sniper", "sniper");
-        Auction auction = new XMPPAuction(connection.getCon(), server.getItemId());
+        Auction auction = new XMPPAuction(connection.getConnection(), server.getItemId(), new XMPPFailureReporter() {
+            public void cannotTranslateMessage(String auctionId, String failedMessage, Exception exception) {
+
+            }
+        });
         auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed));
         auction.join();
         server.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
@@ -114,7 +118,7 @@ public class AuctionSniperEndToEndTest {
         application.showsSniperHasFailed(auction);
         auction.reportPrice(520, 21, "other bidder");
         waitForAnotherAuctionEvent();
-//        application.reportsInvalidMessage(auction, brokenMessage);
+        application.reportsInvalidMessage(auction, brokenMessage);
         application.showsSniperHasFailed(auction);
     }
     private void waitForAnotherAuctionEvent() throws Exception {

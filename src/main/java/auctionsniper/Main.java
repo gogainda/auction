@@ -63,7 +63,7 @@ public class Main {
         });
     }
 
-    public static XMPPAuctionHouse connection(String hostname, String username, String password) {
+    public static XMPPAuctionHouse connection(String hostname, String username, String password) throws XMPPAuctionException {
 
         return XMPPAuctionHouse.connect(
                 hostname, username, password);

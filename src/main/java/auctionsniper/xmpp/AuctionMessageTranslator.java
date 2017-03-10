@@ -2,6 +2,7 @@ package auctionsniper.xmpp;
 
 
 import auctionsniper.AuctionEventListener;
+import auctionsniper.XMPPFailureReporter;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
@@ -15,32 +16,31 @@ import static auctionsniper.AuctionEventListener.PriceSource.FromSniper;
 public class AuctionMessageTranslator implements MessageListener {
     private final AuctionEventListener listener;
     private final String sniperId;
+    private final XMPPFailureReporter failureReporter;
 
-    public AuctionMessageTranslator(String sniperId, AuctionEventListener listener) {
+    public AuctionMessageTranslator(String sniperId, AuctionEventListener listener, XMPPFailureReporter failureReporter) {
         this.sniperId = sniperId;
         this.listener = listener;
+        this.failureReporter = failureReporter;
     }
 
     public void processMessage(Chat chat, Message message) {
         System.out.println("Processing a message" + message.getBody());
         System.out.println("Processing a message for char" + chat);
 
-
+        String messageBody = message.getBody();
         try {
-            if (message.getBody() != null) {
-                translate(message);
-            }
-        } catch (MissingValueException e) {
-            e.printStackTrace();
+            translate(messageBody);
+        } catch (RuntimeException exception) {
             listener.auctionFailed();
-        } catch (Exception parseException) {
-            parseException.printStackTrace();
-            listener.auctionFailed();
+            System.out.println("hereeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+            failureReporter.cannotTranslateMessage(sniperId, messageBody, exception);
+            exception.printStackTrace();
         }
     }
 
-    private void translate(Message message) throws MissingValueException {
-        AuctionEvent event = AuctionEvent.from(message.getBody());
+    private void translate(String message) throws MissingValueException {
+        AuctionEvent event = AuctionEvent.from(message);
         String eventType = event.type();
         if ("CLOSE".equals(eventType)) {
             listener.auctionClosed();

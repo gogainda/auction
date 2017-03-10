@@ -26,7 +26,7 @@ public class MainWindowTest {
                         itemProbe.setReceivedValue(item);
                     }
                 });
-        driver.startBiddingFor("an item-id", 789);
+        driver.openBiddingFor("an item-id", 789);
         driver.check(itemProbe);
     }
 }
